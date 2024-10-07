@@ -1,22 +1,22 @@
-package io.datajek.spring.basics.movierecommendersystem.lesson7;
+package io.datajek.spring.basics.movierecommendersystem.lesson11;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+
 @Component
-public class RecommenderImplementation2 {
+public class RecommenderImplementation {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     //Filter is a dependency of RecommenderImplementation
+    private final Filter filter;
 
-    private Filter filter;
-
-    @Qualifier("CBF")
-    @Autowired
-    public void setFilter(Filter filter) {
+    public RecommenderImplementation(@Qualifier("CF") Filter filter) {
         this.filter = filter;
     }
-
 
     //use a filter to find recommendations
     public String [] recommendMovies (String movie) {
