@@ -1,29 +1,38 @@
 package io.datajek.spring.basics.movierecommendersystem.lesson11;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Component
 @Getter
+@Primary
 public class ContentBasedFilter implements Filter {
 
-    private static int instances = 0;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final Movie movie;
 
-    public ContentBasedFilter(Movie movie) {
-        instances++;
-        System.out.println("ContentBasedFilter constructor called");
-        this.movie = movie;
+    public ContentBasedFilter() {
+        super();
+        logger.info("In ContentBasedFilter constructor method");
     }
 
-    public Movie getMovie() {
-        return movie;
+    @PostConstruct
+    private void postConstruct() {
+        //load movies into cache
+        logger.info("In ContentBasedFilter postConstruct method");
     }
 
-    public static int getInstances(){
-        return ContentBasedFilter.instances;
+    @PreDestroy
+    private void preDestroy() {
+        //clear movies from cache
+        logger.info("In ContentBasedFilter preDestroy method");
     }
+
 
     //getRecommendations takes a movie as input and returns a list of similar movies
     public String[] getRecommendations(String movie) {
